@@ -2,14 +2,19 @@ import React from 'react';
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import NavLink from 'components/navlink';
 import styles from './global-navbar.module.css'
+import { useLocation } from 'react-router-dom';
 
 function GlobalNavbar() {
+    const { pathname } = useLocation();
+
     return <Navbar variant="dark" className={styles.navbar}>
       <Container>
         <Navbar.Brand>Fuel App</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="w-100">
+          <Nav
+            activeKey={pathname}
+          className="w-100">
             <NavLink href="/">Home</NavLink>
             <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
