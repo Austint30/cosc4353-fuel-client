@@ -1,0 +1,10 @@
+
+.navbar {
+    background-color: #126987 !important;
+}
+
+.loginbox {
+    margin-left: auto;
+    display: flex;
+    gap: 6px;
+}
