@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
@@ -8,6 +8,8 @@ import Home from './pages/home';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import config from 'config';
+import PageContent from 'components/page-content';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -26,6 +28,16 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function App() {
+
+    const [ data, setData ] = useState(null);
+
+    useEffect(() => {
+        // Call backend test url
+        fetch(config.serverUrl + '/test')
+        .then((resp) => resp.json())
+        .then((data) => setData(data))
+    })
+
     return (
         <HashRouter>
             <GlobalNavbar />
@@ -34,6 +46,9 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
             </Routes>
+            <PageContent title='Server test'>
+                {data ? JSON.stringify(data) : 'Loading...'}
+            </PageContent>
         </HashRouter>
     );
 }
