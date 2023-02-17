@@ -4,4 +4,12 @@
     background-color: rgb(49 90 104 / 10%);
     padding: 12px;
     margin-top: 1rem;
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+/* .pageContent h3 { */
+    /* text-align: center; */
+/* } */
