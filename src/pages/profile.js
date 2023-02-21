@@ -31,6 +31,7 @@ function Profile() {
       <div>
         
       <label>State  
+      <select name="states" id="state-select" required>
     <option value="">Select...</option>
     
     <option value="AL">AL</option>
@@ -97,7 +98,7 @@ function Profile() {
       </div>
       <div>
       <label>Zip Code  
-        <input type="text" required maxlength="5"/>
+        <input type="text" required/>
       </label>
       </div>
       
