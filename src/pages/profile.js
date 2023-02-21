@@ -4,6 +4,7 @@ import { Form, Row, Col, Alert, Button } from 'react-bootstrap';
 import useStatefulFetch from 'hooks/stateful-fetch';
 import config from 'config';
 import styles from './profile.module.css';
+import usStates from 'data/us-states';
 
 // TODO: Add client-side form validation
 // Form library we could use: https://react-hook-form.com/
@@ -60,7 +61,10 @@ function Profile() {
           <Col sm={3}>
             <Form.Group className='mb-3' controlId='state'>
               <Form.Label>State:</Form.Label>
-              <Form.Control type='state' />
+              <Form.Select type='state' required>
+                <option value="">Choose a state</option>
+                {usStates.map(state => <option key={state} value={state}>{state}</option>)}
+              </Form.Select>
             </Form.Group>
           </Col>
           <Col sm={3}>
