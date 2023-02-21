@@ -5,9 +5,8 @@ import useStatefulFetch from 'hooks/stateful-fetch';
 import config from 'config';
 import styles from './profile.module.css';
 
-const labelStyle = {
-  textAlign: 'right'
-}
+// TODO: Add client-side form validation
+// Form library we could use: https://react-hook-form.com/
 
 function Profile() {
 
