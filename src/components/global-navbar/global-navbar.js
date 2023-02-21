@@ -16,6 +16,7 @@ function GlobalNavbar() {
             activeKey={pathname}
           className="w-100">
             <NavLink href="/">Home</NavLink>
+            <NavLink href="/profile">Profile</NavLink>
             <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

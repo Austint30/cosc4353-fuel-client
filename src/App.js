@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import GlobalNavbar from './components/global-navbar';
 import Home from './pages/home';
+import Profile from './pages/profile';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -43,6 +44,7 @@ function App() {
             <GlobalNavbar />
             <Routes>
                 <Route exact path="/" element={<Home />} />
+                <Route exact path="/profile" element={<Profile />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
             </Routes>
