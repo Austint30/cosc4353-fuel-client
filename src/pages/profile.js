@@ -1,45 +1,24 @@
 import React from 'react';
 import PageContent from 'components/page-content';
-import { Link } from 'react-router-dom';
+import { Form, Row, Col, Alert, Button } from 'react-bootstrap';
+import useStatefulFetch from 'hooks/stateful-fetch';
+import config from 'config';
+import styles from './profile.module.css';
+
+// TODO: Add client-side form validation
+// Form library we could use: https://react-hook-form.com/
 
 function Profile() {
-    return (
-        <PageContent title='Profile Management'>
-            Change Profile<br/>
-    <form>
-        <div>
-        <label>First Name  
-        <input type="text" />
-      </label>
-        </div> 
-      <div>
-      <label>Last Name  
-        <input type="text" />
-      </label>
-      </div>
-      <div>
-      <label>Address  
-        <input type="text" />
-      </label>
-      </div>
-      <div>
-      <label>City  
-        <input type="text" />
-      </label>
-      </div>
-      <div>
-      <label>State  
-        <input type="text" />
-      </label>
-      </div>
-      <div>
-      <label>Zip Code  
-        <input type="text" />
-      </label>
-      </div>
-      
-    </form>
-    <Link className='btn btn-primary' to="/home">Save Changes (To Home )</Link>
+
+  const { executeRequest, loading, error, called } = useStatefulFetch(
+    config.serverUrl + '/test', {
+    method: 'get'
+  });
+
+  function submitProfile(){
+    // TODO implement profile save
+    executeRequest();
+  }
 
   return (
     <>
