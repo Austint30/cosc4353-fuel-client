@@ -16,6 +16,8 @@ Starts the dev server.
 Deploys frontend to Firebase so it is accessible via firebase hosting.
 
 ## Important Libraries
+### ReactJS
+A core library for this project for client-side UI rendering. Learn how React works using its [documentation](https://reactjs.org/docs/getting-started.html).
 ### React-Bootstrap
 React-Bootstrap is the UI library being used by this project. Please use this library as much as possible.
 [Documentation](https://react-bootstrap.github.io/components/alerts)
