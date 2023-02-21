@@ -7,7 +7,7 @@ function PageContent({ children, title }) {
     return (
         <Container>
             <div className={styles.pageContent}>
-                {title ? <h3>{title}</h3> : null}
+                {title ? <h3 className={!children ? 'mb-0' : ''}>{title}</h3> : null}
                 {children}
             </div>
         </Container>

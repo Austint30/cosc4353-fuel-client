@@ -1,3 +1,35 @@
+# COSC 4353 Fuel Prediction Client
+
+React-based web app that communicates with the server to compute fuel price predictions.
+
+## Getting Started
+### Starting Dev Server
+After cloning this repository, follow these steps to set up the dev server:
+#### `npm install`
+Installs required dependencies to run dev server.
+
+#### `npm start`
+Starts the dev server.
+
+### Deploying to Firebase
+#### `npm run deploy`
+Deploys frontend to Firebase so it is accessible via firebase hosting.
+
+## Important Libraries
+### ReactJS
+A core library for this project for client-side UI rendering. Learn how React works using its [documentation](https://reactjs.org/docs/getting-started.html).
+### React-Bootstrap
+React-Bootstrap is the UI library being used by this project. Please use this library as much as possible.
+[Documentation](https://react-bootstrap.github.io/components/alerts)
+### React Router
+Used for enabling multi-page functionality to React, allowing use of the URL to navigate pages of the app.
+[Documentation](https://reactrouter.com/en/main)
+
+## Secondary Libraries
+### prop-types
+Used for enabling runtime type checking of react component props. VS Code also uses it for intellisense so passing props to components is easier. [Documentation/Github](https://github.com/facebook/prop-types)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
