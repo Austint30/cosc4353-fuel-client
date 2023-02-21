@@ -18,8 +18,7 @@ function GlobalNavbar() {
             activeKey={pathname}
           className="w-100">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/profile">Profile</NavLink>
-            <Nav.Link href="#link">Link</Nav.Link>
+            {/* <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
@@ -30,14 +29,14 @@ function GlobalNavbar() {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
             <div className={styles.loginbox}>
               {/* TODO: Change this to a sign out button when logged in */}
               <NavLink href="/login">Login</NavLink>
               <NavLink href="/signup">Sign Up</NavLink>
               {
                 profile && profile.auth && 
-                <NavLink href="/edit_profile">Edit Profile</NavLink>
+                <NavLink href="/profile">Profile</NavLink>
               }
             </div>
           </Nav>
