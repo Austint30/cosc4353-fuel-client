@@ -37,7 +37,7 @@ function App() {
         fetch(config.serverUrl + '/test')
         .then((resp) => resp.json())
         .then((data) => setData(data))
-    })
+    }, [])
 
     return (
         <HashRouter>
