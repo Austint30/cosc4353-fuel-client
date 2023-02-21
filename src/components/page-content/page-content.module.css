@@ -1,9 +1,10 @@
 
 .pageContent {
     border-radius: 6px;
-    background-color: rgb(49 90 104 / 10%);
+    background-color: #f1f4f6;
     padding: 12px;
     margin-top: 1rem;
+    border: 1px solid #dfe8ed;
     /* text-align: center; */
     display: flex;
     flex-direction: column;
