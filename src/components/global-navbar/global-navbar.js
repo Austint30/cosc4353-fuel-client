@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Navbar, Nav, NavDropdown, Container } from 'react-bootstrap';
 import NavLink from 'components/navlink';
 import styles from './global-navbar.module.css'
 import { useLocation } from 'react-router-dom';
+import { ProfileContext} from '../../context';
 
 function GlobalNavbar() {
     const { pathname } = useLocation();
+    const { profile, setProfile } = useContext(ProfileContext);
 
     return <Navbar variant="dark" className={styles.navbar}>
       <Container>
@@ -16,8 +18,7 @@ function GlobalNavbar() {
             activeKey={pathname}
           className="w-100">
             <NavLink href="/">Home</NavLink>
-            <NavLink href="/profile">Profile</NavLink>
-            <Nav.Link href="#link">Link</Nav.Link>
+            {/* <Nav.Link href="#link">Link</Nav.Link>
             <NavDropdown title="Dropdown" id="basic-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
@@ -28,11 +29,15 @@ function GlobalNavbar() {
               <NavDropdown.Item href="#action/3.4">
                 Separated link
               </NavDropdown.Item>
-            </NavDropdown>
+            </NavDropdown> */}
             <div className={styles.loginbox}>
               {/* TODO: Change this to a sign out button when logged in */}
-              <NavLink href="/login">Log In</NavLink>
+              <NavLink href="/login">Login</NavLink>
               <NavLink href="/signup">Sign Up</NavLink>
+              {
+                profile && profile.auth && 
+                <NavLink href="/profile">Profile</NavLink>
+              }
             </div>
           </Nav>
         </Navbar.Collapse>
