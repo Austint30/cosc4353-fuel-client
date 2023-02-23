@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 // import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-import { Form, HashRouter, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import GlobalNavbar from './components/global-navbar';
 import Home from './pages/home';
 import Profile from './pages/profile';
