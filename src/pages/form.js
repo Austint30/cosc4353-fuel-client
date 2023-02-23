@@ -3,9 +3,9 @@ import styles from './forms.module.css';
 
 function Form() {
   const [val, setVal] = useState("");
-
   return (
-    <form>
+    <form name="Fuel Quote Form">
+      <h3>Fuel Quote Form</h3>
       <div>
         <label id="request">
           Gallons Requested:
@@ -16,7 +16,8 @@ function Form() {
             onChange={(e) =>
               setVal((v) => (e.target.validity.valid ? e.target.value : v))
             }
-          />
+            placeholder="0"
+            />
         </label>
       </div>
       <div>
@@ -26,7 +27,7 @@ function Form() {
         <label id="Deliv_Date">
           Delivery Date:
         </label>
-        <input type="date" />
+        <input type="date"/>
       </div>
       <div>
         <label id="sug_pric">
