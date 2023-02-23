@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from './forms.moduke.css';
-import { form, Link } from 'react-router-dom';
+import { Form, Link } from 'react-router-dom';
 
 function form() {
   const [val, setVal] = useState("");
@@ -8,7 +8,7 @@ function form() {
   return (
     <form>
       <div>
-        <label form="gallon_req">
+        <label for="gallon_req">
           Gallons Requested:
           <input
             type="number"
@@ -21,16 +21,16 @@ function form() {
         </label>
       </div>
       <div>
-        <label form="Deliv_Add">Delivery Address:</label>
+        <label for="Deliv_Add">Delivery Address:</label>
       </div>
       <div>
-        <label form="Deliv_Date" id="Deliv_Date">
+        <label for="Deliv_Date" id="Deliv_Date">
           Delivery Date:
         </label>
         <input type="date" />
       </div>
       <div>
-        <label form="sug_price" id="sug_pric">
+        <label for="sug_price" id="sug_pric">
           Suggested Price (per gallon):
         </label>
       </div>
