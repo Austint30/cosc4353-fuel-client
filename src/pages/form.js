@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styles from './forms.moduke.css';
-import { Form, Link } from 'react-router-dom';
 
-function form() {
+function Form() {
   const [val, setVal] = useState("");
 
   return (
@@ -43,4 +42,5 @@ function form() {
     </form>
   );
 }
-export default form;
+
+export default Form;

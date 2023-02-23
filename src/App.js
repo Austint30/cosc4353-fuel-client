@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
 // import { getFirestore } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js";
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Form, HashRouter, Route, Routes } from 'react-router-dom';
 import GlobalNavbar from './components/global-navbar';
 import Home from './pages/home';
 import Profile from './pages/profile';
 import Login from './pages/login';
 import Signup from './pages/signup';
+import Form from './pages/form';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import config from 'config';
 import EditProfile from './pages/edit_profile';
@@ -66,6 +67,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/logged_in" element={<LoggedIn />} />
                 <Route path="/edit_profile" element={<EditProfile />} />
+                <Route path="/form" element={<Form/>} />
             </Routes>
         </HashRouter>
        </ProfileProvider>
