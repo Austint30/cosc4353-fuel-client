@@ -35,6 +35,7 @@ function GlobalNavbar() {
               <NavLink href="/login">Login</NavLink>
               <NavLink href="/signup">Sign Up</NavLink>
               <NavLink href="/form">Fuel Form</NavLink>
+              <NavLink href="/history">Fuel History</NavLink>
               {
                 profile && profile.auth && 
                 <NavLink href="/profile">Profile</NavLink>

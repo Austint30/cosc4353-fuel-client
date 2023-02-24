@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* should be posting to the table, th and td elems */
+/* only seems to be applying to the table elemns though */
+/* used to be forming a grid, is currently just forming a square lol */
+table, th, td {
+  border: 2px solid red;
+  border-style: solid;
+  margin: 2px;
+}
+
+table.center {
+  margin-left:auto; 
+  margin-right:auto;
+  
+}
+
+
+
+body {text-align:center;}
