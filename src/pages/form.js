@@ -23,7 +23,7 @@ function FuelQuoteForm(){
     <>
     <PageContent title='Fuel Quote Form' />
     <PageContent>
-    <Form className={styles.form}
+    <Form className={styles.form} method="get" autocomplete="on"
       onSubmit={(e) => {
         e.preventDefault();
         submitFuelQuoteForm();
@@ -38,7 +38,7 @@ function FuelQuoteForm(){
           <Col sm={5}>
             <Form.Group className='mb-3' controlId='userAddress'>
               <Form.Label>Delivery Address:</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control type="text" readonly="readonly"/>
             </Form.Group>
           </Col>
           <Col sm={3}>
@@ -52,13 +52,13 @@ function FuelQuoteForm(){
           <Col sm={5}>
             <Form.Group className='mb-3' controlId='suggPrice'>
               <Form.Label>Suggested Price/gallon:</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control type="text" readonly="readonly"/>
             </Form.Group>
           </Col>
           <Col sm={3}>
             <Form.Group className='mb-3' controlId='total'>
               <Form.Label>Total:</Form.Label>
-              <Form.Control type="text"/>
+              <Form.Control type="text" readonly="readonly"/>
             </Form.Group>
           </Col>
         </Row>
