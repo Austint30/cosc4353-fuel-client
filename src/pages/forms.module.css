@@ -2,9 +2,17 @@ form[inert] {
     opacity: .3;
 }
 
-h3{
-  align-self: center;
+h1{
+  text-align: center;
+  font-size: xx-large;
+  max-width: 1000px;
+  background-color: #f1f4f6;
+  padding: 15px;
+  border-radius: 8px;
+  margin-inline: auto;
+  margin-top: 50px;
 }
+
 input{
   border-radius: 4px;
   flex: 0 0 200px;
@@ -16,15 +24,15 @@ form {
   flex-direction: column;
   gap: 6px;
   max-width: 1000px;
-  background-color: #F0F0F0;
+  background-color: #f1f4f6;
   padding: 50px;
   border-radius: 8px;
   margin-inline: auto;
-  margin-top: 50px;
+  margin-top: 20px;
 }
   
 button {
-  background-color: #0096FF;
+  background-color: #106cfc;
   color: white;
   border: 0;
   padding: 8px;

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import styles from './forms.module.css';
 
-function Form() {
+const Form = () =>  {
   const [val, setVal] = useState("");
+
   return (
-    <form name="Fuel Quote Form">
-      <h3>Fuel Quote Form</h3>
+    <div className="fqf">
+    <h1>Fuel Quote Form</h1>
+    <form className="Fuel_Quote_Form">
       <div>
         <label id="request">
-          Gallons Requested:
+          Gallons Requested: 
           <input
             type="number"
             pattern="[0-9]*"
@@ -21,26 +23,27 @@ function Form() {
         </label>
       </div>
       <div>
-        <label>Delivery Address:</label>
+        <label>Delivery Address: </label>
       </div>
       <div>
         <label id="Deliv_Date">
-          Delivery Date:
+          Delivery Date: 
         </label>
         <input type="date"/>
       </div>
       <div>
         <label id="sug_pric">
-          Suggested Price (per gallon):
+          Suggested Price (per gallon): 
         </label>
       </div>
       <div>
         <label>
-          Total Amount Due:
+          Total Amount Due: 
         </label>
       </div>
       <button>Submit</button>
     </form>
+    </div>
   );
 }
 
