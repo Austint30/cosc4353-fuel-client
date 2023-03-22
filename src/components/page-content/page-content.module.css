@@ -1,0 +1,16 @@
+
+.pageContent {
+    border-radius: 6px;
+    background-color: #f1f4f6;
+    padding: 12px;
+    margin-top: 1rem;
+    border: 1px solid #dfe8ed;
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .pageContent h3 { */
+    /* text-align: center; */
+/* } */
