@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+// import {useDispatch} from "react-redux"; 
 import PageContent from "components/page-content";
 import { Form, Row, Col, Alert, Button, Container } from "react-bootstrap";
 import useStatefulFetch from "hooks/stateful-fetch";
@@ -23,9 +24,9 @@ const reducer = (state, action) => {
 }
 
 function Profile() {
-
-  const [ formData, dispatch ] = useReducer(reducer, {});
-  
+  // const dispatch = useDispatch();
+  // const [ formData, dispatch ] = useReducer(reducer, {});
+  const [ formData, setFormData ] = useState({});
   const profile = useStatefulFetch(
     config.functionsUrl + "/user/profile",
     {
@@ -39,7 +40,7 @@ function Profile() {
 
   useEffect(() => {
     if (profile.data && profile.loading === false){
-      dispatch({ type: 'UPDATE', value: profile.data });
+      // dispatch({ type: 'UPDATE', value: profile.data });
     }
   }, [ profile.loading ])
 
@@ -60,9 +61,9 @@ function Profile() {
     const uid = user.uid;
     alert(uid);
 
-    await setDoc(doc(db, "form", uid + "-" + new Date().toISOString()), {
+    await setDoc(doc(db, "users", uid + "-" + new Date().toISOString()), { // "form" to "users" CHANGE
       fullName: name,
-      address: address,
+      address: address, // same as "address"
       city: city,
       state: state,
       zip: zip
@@ -77,6 +78,7 @@ function Profile() {
   }
 
   console.log('status', profile.resp)
+  console.log("form data: ", formData)
 
   return (
     <>
@@ -112,6 +114,7 @@ function Profile() {
                 <Form.Control
                   disabled={profile.loading}
                   value={formData.fullName}
+                  onChange = {(e) => setFormData({...formData, fullName: e.target.value})}
                 />
               </Form.Group>
             </Col>
@@ -124,6 +127,7 @@ function Profile() {
                   type="address"
                   disabled={profile.loading}
                   value={formData.address1}
+                  onChange = {(e) => setFormData({...formData, address1: e.target.value})}
                 />
               </Form.Group>
             </Col>
@@ -134,13 +138,15 @@ function Profile() {
                   type="city"
                   disabled={profile.loading}
                   value={formData.city}
+                  onChange = {(e) => setFormData({...formData, city: e.target.value})}
                 />
               </Form.Group>
             </Col>
             <Col sm={3}>
               <Form.Group className="mb-3" controlId="state">
                 <Form.Label>State:</Form.Label>
-                <Form.Select type="state" required disabled={profile.loading} value={formData.state}>
+                <Form.Select type="state" required disabled={profile.loading} value={formData.state}
+                onChange = {(e) => setFormData({...formData, state: e.target.value})}>
                   <option value="">Choose a state</option>
                   {usStates.map((state) => (
                     <option key={state} value={state}>
@@ -153,11 +159,12 @@ function Profile() {
             <Col sm={3}>
               <Form.Group className="mb-3" controlId="zipcode">
                 <Form.Label>Zip Code:</Form.Label>
-                <Form.Control type="zip" disabled={profile.loading} value={formData.zipcode} />
+                <Form.Control type="zip" disabled={profile.loading} value={formData.zipcode} 
+                 onChange = {(e) => setFormData({...formData, zipcode: e.target.value})}/>
               </Form.Group>
             </Col>
           </Row>
-          <Button type="submit" variant="primary" disabled={saveProfile.loading || profile.loading}>
+          <Button type="submit" variant="primary" disabled={!formData.fullName}>
             Save Changes
           </Button>
           {saveProfile.called && !saveProfile.error && !saveProfile.loading ? (
