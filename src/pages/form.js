@@ -7,6 +7,9 @@ import styles from './forms.module.css';
 
 import { getAuth } from "firebase/auth";
 import {setDoc, getDoc,doc} from "firebase/firestore";
+import { useCalcFuelQuote, useSubmitFuelQuote } from "hooks/api/fuel";
+import { FormControlWrapper, FormValidatorProvider } from "context/form-validation";
+import { useUserProfile } from "hooks/api/user";
 
 
 /*
@@ -38,9 +41,7 @@ function FuelQuoteForm(){
   
   // Gives access to Firebase Storage: setDoc, getDoc, doc
   const [ loadUserLoading, setLoadUserLoading ] = useState(null);
-  const [ formData, setFormData ] = useState({price: 0}); // added, initializes total to 0 until changes are made
-  const [ userData, setUserData ] = useState(null);
-  const [ loadUserError, setLoadUserError ] = useState(null); // setDoc, Doc
+  const [ formData, setFormData ] = useState({}); // added, initializes total to 0 until changes are made
 
   // accessing users information, aka. uid, the uid will be the documents name within the firebase storage
   // the uid document name, will allow us to know which user sumbitted which document formated within the firebase cloud: uid-date_of_form_submited
@@ -54,12 +55,16 @@ function FuelQuoteForm(){
     loadUser();
   }, []) // this and the useStatefulFetch needed to be above the error return, else it is hoisting
 
-  // this creates the state that "Changes saved successfully!" or "Something went wrong. We're working on it!"
-  // when user clicks the submit button
-  const { executeRequest, loading, error, called } = useStatefulFetch(
-    config.functionsUrl, {
-    method: 'get'
-  });
+  const userProfileResult = useUserProfile();
+  const [ submitFuelQuote, submitResult ] = useSubmitFuelQuote();
+  const [ calcFuelQuote, calcResult ] = useCalcFuelQuote();
+
+  // Recalculate fuel quote calculation when gallonsRequested changes
+  useEffect(() => {
+    if (formData?.gallonsRequested !== undefined){
+      calcFuelQuote(formData.gallonsRequested);
+    }
+  }, [ formData?.gallonsRequested ])
 
   const user = auth.currentUser || JSON.parse(localStorage.getItem("user")); // conditional if, 
   if (!user) return <div>Error! Must log in</div>
@@ -75,7 +80,6 @@ function FuelQuoteForm(){
   // the field is important for obtianing the address
   async function loadUser(){
 
-    setLoadUserError(null);
     setLoadUserLoading(true);
 
     // the only thing that needs to be changes in order to access the address
@@ -91,38 +95,6 @@ function FuelQuoteForm(){
 
   }
 
- 
-
-
-
-  // Syncs up the submit button with the firebase
-  // Req: needs to link the values from form to variables within form
-  async function submitFuelQuoteForm(){
-    // this alert button is just in case the Document successfully written! and Document was not save, we are working on it! doesn't pop up
-    // but we know the user clicked the sumbit button
-    // can be removed once everything works
-    console.log(formData)
-    alert(uid);
-
-    // address,date,gallons,price,total = sync it up with values, strings from form
-    // doc(db aka. access to the database, collection, set_document_name)
-    // alerts are set in order to notify you that it has been set, if it doesn't pop up it means something is wrong, aka. variables are not being but in
-    await setDoc(doc(db, "form", uid + "-" + new Date().toISOString()),{
-      address: formData.address,
-      date: formData.date,
-      gallons: formData.gallons,
-      price: formData.price,
-      total: formData.gallons * formData.price
-    }).then(() => {
-      alert("Document successfully written!");
-    })
-    .catch(error => {
-        alert("Document was not save, we are working on it!", error);
-    });
-
-    executeRequest();
-  }
-
 
   // The total var should be set to: (gallons * price)
   // variables here are commented out but can be changes, it is only a temp variable
@@ -132,88 +104,91 @@ function FuelQuoteForm(){
     <PageContent title='Fuel Quote Form' />
     {loadUserLoading ? <p>Loading</p> : null}
     <PageContent>
-    <Form
-      className={styles.form}
-      onSubmit={(e) => {
-        e.preventDefault();
-        submitFuelQuoteForm();
-        }}
-        >
-      <Row>
-          <Col sm={3}>
-            <Form.Group className='mb-3' controlId='reqGallon'>
-              <Form.Label>Gallons Request:</Form.Label>
-              <Form.Control
-                type="number"
-                //disabled={form.loading}
-                value={formData.gallons}
-                onChange={(value) => setFormData({ ...formData, gallons: value.target.value})}
-              />
-            </Form.Group>
-          </Col>
-          <Col sm={5}>
-            <Form.Group className='mb-3' controlId='userAddress'>
-              <Form.Label>Delivery Address:</Form.Label>
-              <Form.Control
+    <FormValidatorProvider validationData={{ errors: submitResult?.data?.errors }}>
+      <Form
+        className={styles.form}
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitFuelQuote(formData);
+          }}
+          >
+        <Row>
+            <Col sm={3}>
+              <Form.Group className='mb-3' controlId='reqGallon'>
+                <Form.Label>Gallons Requested:</Form.Label>
+                <FormControlWrapper name='gallonsRequested'>
+                  <Form.Control
+                    type="number"
+                    //disabled={form.loading}
+                    value={formData.gallonsRequested}
+                    onChange={(value) => setFormData({ ...formData, gallonsRequested: value.target.value})}
+                  />
+                </FormControlWrapper>
+              </Form.Group>
+            </Col>
+            <Col sm={3}>
+              <Form.Group className='mb-3' controlId='delivDate'>
+                <Form.Label>Delivery Date:</Form.Label>
+                <FormControlWrapper name='deliveryDate'>
+                  <Form.Control
+                    type="date"
+                    value={formData.deliveryDate}
+                    onChange={(value) => setFormData({ ...formData, deliveryDate: value.target.value})}       
+                  />
+                </FormControlWrapper>
+              </Form.Group>
+            </Col>
+            <Col sm={5}>
+              <Form.Group className='mb-3' controlId='userAddress'>
+                <Form.Label>Delivery Address:</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={true}
+                  value={userProfileResult?.data?.address1} 
+                //readOnly/>
+                />
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+            <Col sm={4}>
+              <Form.Group className='mb-3' controlId='suggPrice'>
+                <Form.Label>Suggested Price/gallon:</Form.Label>
+                <Form.Control
+                  type="text"
+                  disabled={true}
+                  value={calcResult?.data?.suggestedPrice}
+                // readOnly/>
+                />
+              </Form.Group>
+            </Col>
+            <Col sm={3}>
+              <Form.Group className='mb-3' controlId='total'>
+                <Form.Label>Total:</Form.Label>
+                <Form.Control
                 type="text"
-                // disabled={form.loading}
-                value={formData.address} 
-                onChange={(value) => { setFormData({ ...formData, address: value.target.value})}}
-              //readOnly/>
-              />
-            </Form.Group>
-          </Col>
-          <Col sm={3}>
-            <Form.Group className='mb-3' controlId='delivDate'>
-              <Form.Label>Delivery Date:</Form.Label>
-              <Form.Control
-                type="date"
-                //disabled={form.loading}
-                value={formData.date}
-                onChange={(value) => setFormData({ ...formData, date: value.target.value})}       
-              />
-            </Form.Group>
-          </Col>
+                disabled={true}
+                value={calcResult?.data?.totalAmountDue}
+                //onChange={(value) => setFormData({ ...formData, total: value})}             
+                readOnly/>
+              </Form.Group>
+            </Col>
           </Row>
-          <Row>
-          <Col sm={5}>
-            <Form.Group className='mb-3' controlId='suggPrice'>
-              <Form.Label>Suggested Price/gallon:</Form.Label>
-              <Form.Control
-                type="text"
-                //disabled={form.loading}
-                value={formData.price}
-                onChange={(value) => setFormData({ ...formData, price: value.target.value})}
-              // readOnly/>
-              />
-            </Form.Group>
-          </Col>
-          <Col sm={3}>
-            <Form.Group className='mb-3' controlId='total'>
-              <Form.Label>Total:</Form.Label>
-              <Form.Control
-              type="text"
-              //disabled={form.loading}
-              value={formData.price * (formData.gallons || 0)}
-              //onChange={(value) => setFormData({ ...formData, total: value})}             
-              readOnly/>
-            </Form.Group>
-          </Col>
-        </Row>
-      <Button type='submit' variant='primary' disabled={loading}>
-        Save Changes
-      </Button>
-      {called && !error && !loading ? (
-        <Alert className='mt-2' variant='success'>
-          Changes saved successfully!
-        </Alert>
-      ) : null}
-      {error ? (
-        <Alert className='mt-2' variant='danger'>
-          Something went wrong. We're working on it!
-        </Alert>
-      ) : null}
-    </Form>
+        <Button type='submit' variant='primary' disabled={submitResult.loading}>
+          Submit
+        </Button>
+        {submitResult.called && !submitResult.error && !submitResult.loading ? (
+          <Alert className='mt-2' variant='success'>
+            Changes saved successfully!
+          </Alert>
+        ) : null}
+        {submitResult.error && submitResult.resp.status !== 400 ? (
+          <Alert className='mt-2' variant='danger'>
+            Something went wrong. We're working on it!
+          </Alert>
+        ) : null}
+      </Form>
+    </FormValidatorProvider>
     </PageContent>
     </>
   );

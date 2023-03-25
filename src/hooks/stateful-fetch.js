@@ -25,7 +25,13 @@ function useStatefulFetch(input, init){
         fetch(input, { ...restInit, ...excInit })
             .then(async resp => {
                 if (!resp.ok){
-                    setError(await resp.text());
+                    let content = await resp.text();
+                    setError(content)
+                    try {
+                        let parsed = JSON.parse(content);
+                        setData(parsed);
+                    }
+                    catch(e){}
                 }
                 else
                 {
