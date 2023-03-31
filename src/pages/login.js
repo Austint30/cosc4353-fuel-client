@@ -11,7 +11,6 @@ function Login() {
 
     const {profile, setProfile} = useContext(ProfileContext);
 
-
     const navigate = useNavigate();
 
     const emailRef = useRef(null);
@@ -33,15 +32,20 @@ function Login() {
             console.log("email ", email);
             console.log("password: ", password);
             const userCredential = await signInWithEmailAndPassword(auth, email, password)
-            console.log(userCredential);
+
             localStorage.setItem("idToken", userCredential._tokenResponse.idToken);
             localStorage.setItem("refreshToken", userCredential._tokenResponse.refreshToken);
             localStorage.setItem("user", JSON.stringify(userCredential.user))
             
+            console.log("******************************************");
+            const uid = userCredential.user.uid;
+            console.log(userCredential.user.uid);
+            console.log("******************************************");
             setProfile({
                 auth: true
             });
             navigate('/logged_in');
+            return uid;
         } catch (error) {
             console.log(error.message);
             setErrors({
