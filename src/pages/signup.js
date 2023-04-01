@@ -25,6 +25,11 @@ function Signup() {
             
             const userCredential = await createUserWithEmailAndPassword(auth, email, password)
             console.log(userCredential);
+            const loc = window.location.href.split('#')[0];
+            window.location = loc + '#/profile';
+            console.log("logging loc : ", loc);
+            // window.location = "/profile#/profile";
+            
 
         } catch (error) {
 

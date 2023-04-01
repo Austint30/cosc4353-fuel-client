@@ -1,18 +1,19 @@
-import React, {useRef, useState, useContext} from 'react';
+import React, {useRef, useState, useContext, useEffect} from 'react';
 import PageContent from '../components/page-content';
 import { signInWithEmailAndPassword  } from "firebase/auth";
 import {auth} from '../config/firebase.js'
 import {useNavigate} from 'react-router-dom'
 import { Link } from 'react-router-dom';
-import { ProfileContext} from '../context';
+import { ProfileContext, UserContext } from '../context';
 
 
 function Login() {
 
     const {profile, setProfile} = useContext(ProfileContext);
-
+    const {user, setUser} = useContext(UserContext);
+    
     const navigate = useNavigate();
-
+    
     const emailRef = useRef(null);
     const passwordRef = useRef(null); // initialize as null
     const [errors, setErrors] = useState({}); // returns array of 2 components
@@ -42,8 +43,12 @@ function Login() {
             console.log(userCredential.user.uid);
             console.log("******************************************");
             setProfile({
-                auth: true
+                auth: true,
+                user: userCredential.user.email,
+                
             });
+            setUser(userCredential.user);
+            console.log("logging user AFTER SETTING: ", userCredential.user);
             navigate('/logged_in');
             return uid;
         } catch (error) {
