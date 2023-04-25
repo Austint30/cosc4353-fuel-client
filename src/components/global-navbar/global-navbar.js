@@ -50,12 +50,12 @@ function GlobalNavbar() {
               }
                 }> Logout</div>}
               {!email && <NavLink href="/signup">Sign Up</NavLink>}
-              <NavLink href="/form">Fuel Form</NavLink> 
-              <NavLink href="/history">Fuel History</NavLink>
-              <NavLink href="/pricing_module">Pricing</NavLink>
+              {email && <NavLink href="/form">Fuel Form</NavLink>}
+              {email && <NavLink href="/history">Fuel History</NavLink>}
+              {email && <NavLink href="/pricing_module">Pricing</NavLink>}
               
               {
-                profile && profile.auth && (
+                email && profile && profile.auth && (
                   <><NavLink href="/profile">Profile</NavLink></> 
                 )
               }
