@@ -42,6 +42,7 @@ function FuelQuoteForm(){
   // Gives access to Firebase Storage: setDoc, getDoc, doc
   const [ loadUserLoading, setLoadUserLoading ] = useState(null);
   const [ formData, setFormData ] = useState({}); // added, initializes total to 0 until changes are made
+  const [ displayQuote, setDisplayQuote ] = useState(false);
 
   // accessing users information, aka. uid, the uid will be the documents name within the firebase storage
   // the uid document name, will allow us to know which user sumbitted which document formated within the firebase cloud: uid-date_of_form_submited
@@ -59,12 +60,19 @@ function FuelQuoteForm(){
   const [ submitFuelQuote, submitResult ] = useSubmitFuelQuote();
   const [ calcFuelQuote, calcResult ] = useCalcFuelQuote();
 
-  // Recalculate fuel quote calculation when gallonsRequested changes
-  useEffect(() => {
-    if (formData?.gallonsRequested !== undefined){
+  let formValid = formData.gallonsRequested && formData.deliveryDate
+
+  function handleGetQuoteClicked(){
+    if (formValid){
       calcFuelQuote(formData.gallonsRequested);
+      setDisplayQuote(true);
     }
-  }, [ formData?.gallonsRequested ])
+  }
+
+  function handleFormChange(fieldName, value){
+    setDisplayQuote(false);
+    setFormData({ ...formData, [fieldName]: value})
+  }
 
   const user = auth.currentUser || JSON.parse(localStorage.getItem("user")); // conditional if, 
   if (!user) return <div>Error! Must log in</div>
@@ -121,7 +129,7 @@ function FuelQuoteForm(){
                     type="number"
                     //disabled={form.loading}
                     value={formData.gallonsRequested}
-                    onChange={(value) => setFormData({ ...formData, gallonsRequested: value.target.value})}
+                    onChange={(e) => handleFormChange('gallonsRequested', e.target.value)}
                   />
                 </FormControlWrapper>
               </Form.Group>
@@ -133,7 +141,7 @@ function FuelQuoteForm(){
                   <Form.Control
                     type="date"
                     value={formData.deliveryDate}
-                    onChange={(value) => setFormData({ ...formData, deliveryDate: value.target.value})}       
+                    onChange={(e) => handleFormChange('deliveryDate', e.target.value)}   
                   />
                 </FormControlWrapper>
               </Form.Group>
@@ -151,32 +159,42 @@ function FuelQuoteForm(){
             </Col>
             </Row>
             <Row>
-            <Col sm={4}>
-              <Form.Group className='mb-3' controlId='suggPrice'>
-                <Form.Label>Suggested Price/gallon:</Form.Label>
-                <Form.Control
-                  type="text"
-                  disabled={true}
-                  value={calcResult?.data?.suggestedPrice}
-                // readOnly/>
-                />
-              </Form.Group>
-            </Col>
-            <Col sm={3}>
-              <Form.Group className='mb-3' controlId='total'>
-                <Form.Label>Total:</Form.Label>
-                <Form.Control
-                type="text"
-                disabled={true}
-                value={calcResult?.data?.totalAmountDue}
-                //onChange={(value) => setFormData({ ...formData, total: value})}             
-                readOnly/>
-              </Form.Group>
-            </Col>
-          </Row>
-        <Button type='submit' variant='primary' disabled={submitResult.loading}>
-          Submit
-        </Button>
+              <Col>
+                <Button variant='primary' disabled={submitResult.loading || !formValid} onClick={handleGetQuoteClicked}>
+                  Get Quote
+                </Button>
+              </Col>
+            </Row>
+            {displayQuote ? (
+              <>
+              <Row>
+                <Col sm={4}>
+                  <Form.Group className='mb-3' controlId='suggPrice'>
+                    <Form.Label>Suggested Price/gallon:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={calcResult?.data?.suggestedPrice}
+                      readOnly
+                    />
+                  </Form.Group>
+                </Col>
+                <Col sm={3}>
+                  <Form.Group className='mb-3' controlId='total'>
+                    <Form.Label>Total:</Form.Label>
+                    <Form.Control
+                    type="text"
+                    value={calcResult?.data?.totalAmountDue}
+                    //onChange={(value) => setFormData({ ...formData, total: value})}             
+                    readOnly/>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Button type='submit' variant='primary' disabled={submitResult.loading}>
+                Submit
+              </Button>
+              </>
+            ) : null}
+        
         {submitResult.called && !submitResult.error && !submitResult.loading ? (
           <Alert className='mt-2' variant='success'>
             Changes saved successfully!

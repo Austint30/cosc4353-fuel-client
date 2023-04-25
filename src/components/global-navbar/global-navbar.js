@@ -52,7 +52,6 @@ function GlobalNavbar() {
               {!email && <NavLink href="/signup">Sign Up</NavLink>}
               {email && <NavLink href="/form">Fuel Form</NavLink>}
               {email && <NavLink href="/history">Fuel History</NavLink>}
-              {email && <NavLink href="/pricing_module">Pricing</NavLink>}
               
               {
                 email && profile && profile.auth && (
