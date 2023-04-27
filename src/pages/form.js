@@ -10,7 +10,7 @@ import {setDoc, getDoc,doc} from "firebase/firestore";
 import { useCalcFuelQuote, useSubmitFuelQuote } from "hooks/api/fuel";
 import { FormControlWrapper, FormValidatorProvider } from "context/form-validation";
 import { useUserProfile } from "hooks/api/user";
-
+import { useFuelQuoteHistory } from "hooks/api/fuel";
 
 /*
 Work-On:
@@ -47,6 +47,45 @@ function FuelQuoteForm(){
   // accessing users information, aka. uid, the uid will be the documents name within the firebase storage
   // the uid document name, will allow us to know which user sumbitted which document formated within the firebase cloud: uid-date_of_form_submited
   const auth = getAuth(app)
+
+  const fuelHist = useFuelQuoteHistory();
+  const profile = useUserProfile();
+
+  const currentPrice = 1.50
+  var userState = profile?.data?.state
+  var numRequest = fuelHist?.data?.length
+  var totalGallonsRequested = fuelHist?.data?.reduce((accum,item) => accum + item?.gallonsRequested, 0)
+  var locationFactor = 0
+  var rateHistoryFactor = 0 
+  var gallonsRequestedFactor = 0
+  const companyProfitFactor = 0.1
+
+
+// Check if the user is Texas resident or not
+  if( userState === 'TX'){
+    locationFactor = 0.02
+  }else{
+    locationFactor = 0.04
+  }
+
+// Check if the user requested before
+  if( numRequest >= 1){
+    rateHistoryFactor = 0
+  }else{
+    rateHistoryFactor = 0.01
+  }
+
+// Check if total gallon requested greater than 1000 or not
+  if(totalGallonsRequested > 1000){
+    gallonsRequestedFactor = 0.02
+  }else{
+    gallonsRequestedFactor = 0.03
+  }
+
+// Calculate margin and suggested price
+  var margin = 1.50 * (locationFactor + rateHistoryFactor + gallonsRequestedFactor + companyProfitFactor)
+  var suggestedPrice = 1.50 + margin
+  
 
   // if user == null
   // return error page or something
@@ -102,7 +141,6 @@ function FuelQuoteForm(){
     }
 
   }
-
 
   // The total var should be set to: (gallons * price)
   // variables here are commented out but can be changes, it is only a temp variable
@@ -173,7 +211,7 @@ function FuelQuoteForm(){
                     <Form.Label>Suggested Price/gallon:</Form.Label>
                     <Form.Control
                       type="text"
-                      value={calcResult?.data?.suggestedPrice}
+                      value={suggestedPrice}
                       readOnly
                     />
                   </Form.Group>
@@ -183,7 +221,7 @@ function FuelQuoteForm(){
                     <Form.Label>Total:</Form.Label>
                     <Form.Control
                     type="text"
-                    value={calcResult?.data?.totalAmountDue}
+                    value={formData.gallonsRequested * suggestedPrice}
                     //onChange={(value) => setFormData({ ...formData, total: value})}             
                     readOnly/>
                   </Form.Group>
