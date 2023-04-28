@@ -80,7 +80,7 @@ function FuelQuoteForm(){
 
     switch (fieldName) {
       case 'gallonsRequested':
-        if (value < 0) value = 0;
+        if (value <= 0) value = 1;
         break;
       case 'deliveryDate':
         let today = toLocalIsoFormat(new Date()).split('T')[0];
