@@ -7,7 +7,8 @@ function Test() {
 
   const result = useFuelQuoteHistory();
 
-  let forms = result.data || [];  
+  let forms = result.data || [];
+
 
 return(
   <>

@@ -97,7 +97,7 @@ function PricingModule(){
           <Col sm={3}>
             <Form.Group className='mb-3' controlId='gallonsRequested'>
               <Form.Label>Gallons Requested:</Form.Label>
-              <Form.Control type="number" min={0}/>
+              <Form.Control type="number"/>
             </Form.Group>
           </Col>
           </Row>

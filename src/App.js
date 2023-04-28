@@ -54,6 +54,7 @@ function App() {
             });
         }
     }, [])
+
     return (
        <ProfileProvider value = {{profile, setProfile}}>
          <HashRouter>
