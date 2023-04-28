@@ -4,6 +4,10 @@ import {Form,Row,Col,Alert,Button} from 'react-bootstrap';
 import useStatefulFetch from 'hooks/stateful-fetch';
 import { db, config, app } from 'config/firebase';
 import styles from './forms.module.css';
+import moment, * as moments from 'moment';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 
 import { getAuth } from "firebase/auth";
 import {setDoc, getDoc,doc} from "firebase/firestore";
@@ -165,6 +169,7 @@ function FuelQuoteForm(){
                 <FormControlWrapper name='gallonsRequested'>
                   <Form.Control
                     type="number"
+                    min="0"
                     //disabled={form.loading}
                     value={formData.gallonsRequested}
                     onChange={(e) => handleFormChange('gallonsRequested', e.target.value)}
@@ -176,11 +181,15 @@ function FuelQuoteForm(){
               <Form.Group className='mb-3' controlId='delivDate'>
                 <Form.Label>Delivery Date:</Form.Label>
                 <FormControlWrapper name='deliveryDate'>
-                  <Form.Control
-                    type="date"
-                    value={formData.deliveryDate}
-                    onChange={(e) => handleFormChange('deliveryDate', e.target.value)}   
+                <DatePicker
+                  onChange={(e) => handleFormChange('deliveryDate', e.target.value)}
+                  minDate={moment().toDate()}
                   />
+                  {/* <Form.Control
+                    type="date"
+                    minDate={new Date()}
+                    onChange={(e) => handleFormChange('deliveryDate', e.target.value)}   
+                  /> */}
                 </FormControlWrapper>
               </Form.Group>
             </Col>
