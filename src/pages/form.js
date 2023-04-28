@@ -10,6 +10,7 @@ import {setDoc, getDoc,doc} from "firebase/firestore";
 import { useCalcFuelQuote, useSubmitFuelQuote } from "hooks/api/fuel";
 import { FormControlWrapper, FormValidatorProvider } from "context/form-validation";
 import { useUserProfile } from "hooks/api/user";
+import { toLocalIsoFormat } from "util/date";
 
 
 /*
@@ -71,12 +72,26 @@ function FuelQuoteForm(){
 
   function handleFormChange(fieldName, value){
     setDisplayQuote(false);
+
+    switch (fieldName) {
+      case 'gallonsRequested':
+        if (value < 0) value = 0;
+        break;
+      case 'deliveryDate':
+        let today = toLocalIsoFormat(new Date()).split('T')[0];
+        console.log(toLocalIsoFormat(new Date()))
+        if (value < today)
+          value = today;
+      default:
+        break;
+    }
+    if (fieldName === 'gallonsRequested'){}
+
     setFormData({ ...formData, [fieldName]: value})
   }
 
   const user = auth.currentUser || JSON.parse(localStorage.getItem("user")); // conditional if, 
   if (!user) return <div>Error! Must log in</div>
-  console.log("auth: ", auth)
   // currently email is not being used for anything within this js file, only uid is being used
   const email = user.email;
   const emailVerified = user?.emailVerified;
@@ -128,6 +143,7 @@ function FuelQuoteForm(){
                   <Form.Control
                     type="number"
                     //disabled={form.loading}
+                    min={0}
                     value={formData.gallonsRequested}
                     onChange={(e) => handleFormChange('gallonsRequested', e.target.value)}
                   />
@@ -140,6 +156,7 @@ function FuelQuoteForm(){
                 <FormControlWrapper name='deliveryDate'>
                   <Form.Control
                     type="date"
+                    min={toLocalIsoFormat(new Date()).split('T')[0]}
                     value={formData.deliveryDate}
                     onChange={(e) => handleFormChange('deliveryDate', e.target.value)}   
                   />
