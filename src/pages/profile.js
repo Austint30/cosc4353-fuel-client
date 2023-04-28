@@ -131,7 +131,7 @@ function Profile() {
                 Changes saved successfully!
               </Alert>
             ) : null}
-            {saveProfileStatus.error && saveProfileStatus.resp.status !== 400 ? (
+            {saveProfileStatus.error && saveProfileStatus.resp.status !== 404 ? (
               <Alert className="mt-2" variant="danger">
                 Something went wrong. We're working on it!
               </Alert>
