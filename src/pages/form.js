@@ -38,11 +38,16 @@ Work-On:
       I think austin wants the user to login before having access to this page, and he used this. not really sure how it works. this isn't as important as the first too.
 */
 
+const INITAL_FORM_DATA = {
+  gallonsRequested: 0,
+  deliveryDate: ''
+}
+
 function FuelQuoteForm(){
   
   // Gives access to Firebase Storage: setDoc, getDoc, doc
   const [ loadUserLoading, setLoadUserLoading ] = useState(null);
-  const [ formData, setFormData ] = useState({}); // added, initializes total to 0 until changes are made
+  const [ formData, setFormData ] = useState(INITAL_FORM_DATA); // added, initializes total to 0 until changes are made
   const [ displayQuote, setDisplayQuote ] = useState(false);
 
   // accessing users information, aka. uid, the uid will be the documents name within the firebase storage
@@ -131,7 +136,11 @@ function FuelQuoteForm(){
         className={styles.form}
         onSubmit={(e) => {
           e.preventDefault();
-          submitFuelQuote(formData);
+          submitFuelQuote(formData)
+          .then(() => {
+            setFormData(INITAL_FORM_DATA);
+            setDisplayQuote(false);
+          });
           }}
           >
         <Row>
@@ -176,12 +185,12 @@ function FuelQuoteForm(){
             </Row>
             <Row>
               <Col>
-                <Button variant='primary' disabled={submitResult.loading || !formValid} onClick={handleGetQuoteClicked}>
-                  Get Quote
+                <Button variant='primary' disabled={submitResult.loading || !formValid || calcResult.loading} onClick={handleGetQuoteClicked}>
+                  { calcResult.loading ? 'Getting Quote' : 'Get Quote'}
                 </Button>
               </Col>
             </Row>
-            {displayQuote ? (
+            {displayQuote && !calcResult.loading ? (
               <>
               <Row>
                 <Col sm={4}>
@@ -213,7 +222,7 @@ function FuelQuoteForm(){
         
         {submitResult.called && !submitResult.error && !submitResult.loading ? (
           <Alert className='mt-2' variant='success'>
-            Changes saved successfully!
+            Fuel quote submitted successfully! Saved to Fuel History.
           </Alert>
         ) : null}
         {submitResult.error && submitResult.resp.status !== 400 ? (

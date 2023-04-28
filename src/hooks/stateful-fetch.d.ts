@@ -1,6 +1,6 @@
 
 export interface FetchResult {
-    executeRequest: (requestInit?: RequestInit) => void,
+    executeRequest: (requestInit?: RequestInit) => Promise<Response>,
     data: any,
     error: any,
     loading: boolean,

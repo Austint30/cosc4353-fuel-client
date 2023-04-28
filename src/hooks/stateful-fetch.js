@@ -22,7 +22,7 @@ function useStatefulFetch(input, init){
         setLoading(true);
         setError(null);
         setCalled(true);
-        fetch(input, { ...restInit, ...excInit })
+        return fetch(input, { ...restInit, ...excInit })
             .then(async resp => {
                 if (!resp.ok){
                     let content = await resp.text();
