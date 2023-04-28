@@ -9,11 +9,15 @@ function GlobalNavbar() {
     const { pathname } = useLocation();
     const { profile, setProfile } = useContext(ProfileContext);
     const { user, setUser } = useContext(UserContext);
-    const [email, setEmail] = useState();
+    const [email, setEmail] = useState(localStorage.getItem("userEmail"));
+
     // useEffect(() => {setEmail(profile?.email)}, [profile]); 
     useEffect(() => {
       console.log('inside useEfect', profile)
-      if (profile?.user) setEmail(profile.user)
+      if (profile?.user){
+          setEmail(profile.user);
+          localStorage.setItem("userEmail", profile.user);
+        }
     }, [profile])
     console.log("logging profile: ", profile)
     // const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")))
