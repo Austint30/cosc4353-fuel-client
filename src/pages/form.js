@@ -1,14 +1,14 @@
-import React, {useState, useEffect} from "react";
 import PageContent from 'components/page-content';
-import {Form,Row,Col,Alert,Button} from 'react-bootstrap';
-import useStatefulFetch from 'hooks/stateful-fetch';
-import { db, config, app } from 'config/firebase';
+import { app, db } from 'config/firebase';
+import { useEffect, useState } from "react";
+import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import styles from './forms.module.css';
 
-import { getAuth } from "firebase/auth";
-import {setDoc, getDoc,doc} from "firebase/firestore";
-import { useCalcFuelQuote, useSubmitFuelQuote } from "hooks/api/fuel";
+
 import { FormControlWrapper, FormValidatorProvider } from "context/form-validation";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { useCalcFuelQuote, useSubmitFuelQuote } from "hooks/api/fuel";
 import { useUserProfile } from "hooks/api/user";
 import { toLocalIsoFormat } from "util/date";
 
@@ -117,7 +117,6 @@ function FuelQuoteForm(){
     }
 
   }
-
 
   // The total var should be set to: (gallons * price)
   // variables here are commented out but can be changes, it is only a temp variable
